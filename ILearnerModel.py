@@ -1,4 +1,8 @@
-#%%
+# Author: Mark Gee
+# Platform: keras
+# ILearner model definitions
+# Here, we use LSTM, GRU, CNN LSTM, ConvLSTM2D
+
 from keras.layers import LSTM, GRU, ConvLSTM2D, Dense, Flatten, Dropout, LSTM, TimeDistributed, ConvLSTM2D, Conv1D, MaxPooling1D, Masking, Reshape
 from keras.models import Sequential, Model
 from keras.utils import to_categorical
@@ -59,6 +63,3 @@ def convlstm2d(n_length, batch_size=None, n_timesteps=None, stateful=False, leve
     x = Dense(100, activation='relu')(x)
     x = Dense(levels, activation='softmax')(x)
     return Model(input, x)
-
-
-#%%

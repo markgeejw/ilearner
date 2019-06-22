@@ -1,8 +1,13 @@
+# Author: Mark Gee
+# Platform: keras
+# Utility functions for ILearner
+
 from keras.callbacks import Callback
 from pykalman import KalmanFilter
 import numpy as np
 from keras import backend as K
 
+# Reset states callback for stateful LSTMs
 class ResetStatesCallback(Callback):
     def __init__(self, n_sequences):
         self.counter = 0
@@ -13,7 +18,7 @@ class ResetStatesCallback(Callback):
             self.model.reset_states()
         self.counter += 1
 
-#moving average filter
+# Moving average filter
 def moving_average_filter(data, window):
     N = window
     cumsum, filtered_data = [0], []
@@ -47,6 +52,7 @@ def kalman_filter(data, error):
     (filtered_state_means, _) = kf.filter(data)
     return np.array(filtered_state_means)
 
+# F1 Metric
 def f1(y_true, y_pred):
     def recall(y_true, y_pred):
         """Recall metric.

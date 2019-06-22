@@ -1,4 +1,9 @@
-#%%
+# Author: Mark Gee
+# Platform: keras
+# Data generator for ILearner
+# Load from extracted gaze coordinates
+# Executes filtering, windowing, etc.
+
 import scipy.io as sio
 import numpy as np
 from keras.utils import to_categorical, Sequence
@@ -8,6 +13,8 @@ from keras.callbacks import Callback
 import random
 
 from utils import moving_average_filter, kalman_filter
+
+DATASET_PATH = './gazereader_data.mat'
 
 class ILearnerData(Sequence):
     def __init__(self, batch_size, 
@@ -20,7 +27,6 @@ class ILearnerData(Sequence):
                     model_error=None,
                     n_classes=6, 
                     random_data=False, 
-                    stateful=False,
                     include_low_fps=False):
         self.batch_size = batch_size
         self.window_size = window_size
@@ -29,7 +35,7 @@ class ILearnerData(Sequence):
         self.random = random_data
 
         # Load dataset into arrays 
-        dataset = sio.loadmat('./gazereader_dims.mat')
+        dataset = sio.loadmat(DATASET_PATH)
         if text_diff == 'all':
             gaze_coordinates_all = np.concatenate([dataset['easy_gaze'], dataset['medium_gaze'], dataset['hard_gaze']], axis=1)[0]
             raw_scores = np.concatenate([dataset['easy_scores'], dataset['medium_scores'], dataset['hard_scores']], axis=1)[0]
